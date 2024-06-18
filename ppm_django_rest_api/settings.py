@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 # Application definition
 
@@ -39,8 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #libraries not installe by default
     'rest_framework',
+    'rest_framework_simplejwt',
     #my own apps
     'polls',
+    'authentication',
 ]
 
 MIDDLEWARE = [

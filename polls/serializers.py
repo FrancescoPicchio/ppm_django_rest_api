@@ -24,6 +24,7 @@ class QuestionListSerializer(serializers.Serializer):
     pub_date = serializers.DateTimeField()
     was_published_recently = serializers.BooleanField(read_only=True) #read_only=True because we do not want it to be part of the data the serializer has to consider this field for get and post requests, because this isn't a field of the model but the output of a method
     choices = ChoiceSerializer(many=True, write_only=True)
+    creator = serializers.ReadOnlyField(source='creator.username')
 
     #Django rest framework .save() will call this function so we'll have cleaner code in the views
     def create(self, validated_data):
