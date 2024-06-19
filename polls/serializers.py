@@ -4,6 +4,7 @@ from .models import Question, Choice
 
 
 class ChoiceSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     choice_text = serializers.CharField(max_length=200)
 
     def create(self, validated_data):
@@ -21,6 +22,7 @@ class VoteSerializer(serializers.Serializer):
 
 #serializer mostly used when getting a list of all questions
 class QuestionListSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     question_text = serializers.CharField(max_length=200)
     pub_date = serializers.DateTimeField()
     was_published_recently = serializers.BooleanField(read_only=True) #read_only=True because we do not want it to be part of the data the serializer has to consider this field for get and post requests, because this isn't a field of the model but the output of a method
