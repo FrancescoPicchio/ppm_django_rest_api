@@ -70,6 +70,7 @@ const QuestionList = () => {
     try {
         const data = await submitQuestionVote(questionId, choiceId);
         setSelectedVote(data);
+        handleQuestionClick(questionId);
       } catch (err) {
         console.error('Error submitting your vote:', err);
         if (err.response && err.response.status === 401) {
@@ -93,13 +94,12 @@ const QuestionList = () => {
     return <div>Loading...</div>;
   }
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+
   return (
     <div>
       {selectedQuestion ? ( //? is to render only if selectedQuestion is true, else renders the rest after :
         <div>
+          {error && <p>{error}</p>}
           <h2>{selectedQuestion.question_text}</h2>
           <ul>
             {selectedQuestion.choices.map((choice) => (
@@ -107,11 +107,12 @@ const QuestionList = () => {
             ))}
           </ul>
           <p>author: {selectedQuestion.creator}</p>
-          <button onClick={() => setSelectedQuestion(null)}>Back to List</button>
+          <button onClick={() => {setSelectedQuestion(null); setError(null)}}>Back to List</button>
         </div>
       ) : (
         <div>
           <h1>Questions</h1>
+          {error && <p>{error}</p>}
           <ul>
             {questions.map((question) => (
               <li key={question.id} onClick={() => handleQuestionClick(question.id)}>

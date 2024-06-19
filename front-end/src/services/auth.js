@@ -19,6 +19,17 @@ export const login = async (username, password) => {
   }
 };
 
+export const register = async (username, email, password, password2) => {
+  try{
+    const response = await axios.post(`${API_URL}register/`, {
+      username, email, password, password2
+    });
+    return  response.data.access;
+    } catch (error) {
+      throw error;
+    }
+}
+
 export const refreshToken = async () => {
   try {
     const refreshToken = localStorage.getItem('refreshToken');

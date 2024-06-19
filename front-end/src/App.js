@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
+import Registration from './components/Registration';
 import QuestionList from './components/QuestionList';
 import { logout } from './services/auth';
 
@@ -23,7 +24,10 @@ function App() {
         {isAuthenticated ? (
           <QuestionList />
         ) : (
+          <>
           <Login setIsAuthenticated={setIsAuthenticated} />
+          <Registration setIsAuthenticated={setIsAuthenticated} />
+          </>
         )}
       </main>
     </div>
