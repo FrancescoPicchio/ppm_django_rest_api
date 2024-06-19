@@ -38,7 +38,7 @@ def question_detail_view(request, question_id):
             return Response({'detail': 'You do not have permission to perform this action.'}, status=status.HTTP_403_FORBIDDEN)
 
     if request.method == 'GET':
-        serializer = QuestionDetailSerializer(question)
+        serializer = QuestionResultSerializer(question)
         return Response(serializer.data)
     elif request.method == 'PATCH': #PATCH instead of PUT because we ask the client only to send us the data they want to modify, instead of modifying the entire object
         serializer = QuestionDetailSerializer(question, data=request.data, partial=True)
@@ -49,6 +49,7 @@ def question_detail_view(request, question_id):
         question.delete()
         return Response("Question deleted", status=status.HTTP_204_NO_CONTENT)
     
+#FIXME it's kinda a useless view
 #shows the results for a single question
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

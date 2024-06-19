@@ -20,6 +20,7 @@ export const fetchQuestionDetails = async (questionId) => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      
       return response.data;
     } catch (error) {
       console.error('Error fetching question details:', error);

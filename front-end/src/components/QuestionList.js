@@ -78,7 +78,7 @@ const QuestionList = () => {
           <h2>{selectedQuestion.question_text}</h2>
           <ul>
             {selectedQuestion.choices.map((choice) => (
-                <li key={choice.id}>{choice.choice_text}</li>
+                <li key={choice.id}>{choice.choice_text} - votes: {choice.votes}</li>
             ))}
           </ul>
           <p>author: {selectedQuestion.creator}</p>
