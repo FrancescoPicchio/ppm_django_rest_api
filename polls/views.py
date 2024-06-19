@@ -87,7 +87,9 @@ def vote_view(request, question_id):
     serializer = VoteSerializer(data=request.data)
     if serializer.is_valid():
         choice = get_object_or_404(Choice, pk=serializer.validated_data['choice_id'], question=question)
-        choice.votes += 1
-        choice.save()
-        return Response("Voted")
+        if not question.has_user_voted(request.user):
+            choice.votes += 1
+            choice.save()
+            return Response("Voted") 
+        return Response({'detail': 'You have already voted, only one vote per user.'}, status=status.HTTP_403_FORBIDDEN)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

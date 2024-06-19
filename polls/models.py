@@ -2,12 +2,16 @@ from django.db import models
 #libraries for having access to timezone and check dates of polls
 from datetime import timedelta
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Create your models here.
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
-    creator = models.ForeignKey('auth.User', related_name='movies', on_delete=models.CASCADE, default="1") #default user is admin, FIXME adjust the users for questions that had the default user assigned
+    creator = models.ForeignKey(User, related_name='quesions_created', on_delete=models.CASCADE, default="1") #default user is admin, FIXME adjust the users for questions that had the default user assigned
+    voters = models.ManyToManyField(User, related_name='questions_answered', blank=True)
 
     def __str__(self):
         return self.question_text
@@ -21,6 +25,9 @@ class Question(models.Model):
         if not hasattr(self, '_choices'):
             self._choices = self.choice_set.all()
         return self._choices
+    
+    def has_user_voted(self, User):
+        return self.voters.filter(id=User.id).exists()
 
 
 class Choice(models.Model):
