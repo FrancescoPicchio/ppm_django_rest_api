@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { refreshToken } from '../services/auth';
-import {fetchQuestionList, fetchQuestionDetails,} from '../services/api'
+import {fetchQuestionList, fetchQuestionDetails, submitQuestionVote} from '../services/api';
 
 const API_URL = 'http://localhost:8000/api/polls/questions/';
 
@@ -11,6 +11,7 @@ const QuestionList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [selectedVote, setSelectedVote] = useState(null);
 
   useEffect(() => {
     const fetchQuestionList = async () => {
@@ -64,6 +65,30 @@ const QuestionList = () => {
     }
   };
 
+  //adds a vote to a choice in the poll
+  const handleChoiceClick = async (questionId, choiceId) => {
+    try {
+        const data = await submitQuestionVote(questionId, choiceId);
+        setSelectedVote(data);
+      } catch (err) {
+        console.error('Error submitting your vote:', err);
+        if (err.response && err.response.status === 401) {
+          try {
+            await refreshToken();
+            handleChoiceClick(questionId);
+          } catch (refreshError) {
+            setError('Authentication error');
+          }
+        } 
+        else if (err.response && err.response.status === 403){
+            setError("You've already voted on this poll"); //FIXME application shouldn't crash/give you an error just because you tried to vote when you voted already
+        }
+        else {
+          setError('Error submitting your vote');
+        }
+      }
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -73,12 +98,12 @@ const QuestionList = () => {
   }
   return (
     <div>
-      {selectedQuestion ? (
+      {selectedQuestion ? ( //? is to render only if selectedQuestion is true, else renders the rest after :
         <div>
           <h2>{selectedQuestion.question_text}</h2>
           <ul>
             {selectedQuestion.choices.map((choice) => (
-                <li key={choice.id}>{choice.choice_text} - votes: {choice.votes}</li>
+                <li key={choice.id} onClick={() => handleChoiceClick(selectedQuestion.id, choice.id)}>{choice.choice_text} - votes: {choice.votes}</li>
             ))}
           </ul>
           <p>author: {selectedQuestion.creator}</p>

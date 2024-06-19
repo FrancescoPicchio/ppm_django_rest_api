@@ -91,6 +91,7 @@ def vote_view(request, question_id):
         if not question.has_user_voted(request.user):
             choice.votes += 1
             choice.save()
+            question.voters.add(request.user)
             return Response("Voted") 
         return Response({'detail': 'You have already voted, only one vote per user.'}, status=status.HTTP_403_FORBIDDEN)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

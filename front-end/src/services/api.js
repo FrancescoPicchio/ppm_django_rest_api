@@ -20,10 +20,28 @@ export const fetchQuestionDetails = async (questionId) => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      
+
       return response.data;
     } catch (error) {
       console.error('Error fetching question details:', error);
       throw error;
     }
   };
+
+export const submitQuestionVote = async (questionId, choiceId) => {
+    try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axios.patch(`${API_URL}polls/questions/${questionId}/vote/`,
+            { choice_id: choiceId }, 
+            {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+  
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching question details:', error);
+        throw error;
+      }
+}
