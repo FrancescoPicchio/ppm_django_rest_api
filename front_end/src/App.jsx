@@ -3,8 +3,6 @@ import LoginSignUp from './pages/LoginSignUp';
 import QuestionList from './components/QuestionList';
 import Header from './components/Header';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from './components/AuthProvider';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(

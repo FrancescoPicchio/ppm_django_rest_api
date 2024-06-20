@@ -1,12 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { logout } from '../services/auth';
-import { useContext } from 'react';
-import { AuthContext } from './AuthProvider';
-
 
 const Header = ({ isAuthenticated, setIsAuthenticated }) => {
-
     const handleLogout = () => {
         logout();
         setIsAuthenticated(false);

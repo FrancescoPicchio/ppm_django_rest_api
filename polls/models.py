@@ -11,7 +11,6 @@ class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     creator = models.ForeignKey(User, related_name='quesions_created', on_delete=models.CASCADE, default="1") #default user is admin, FIXME adjust the users for questions that had the default user assigned
-    voters = models.ManyToManyField(User, related_name='questions_answered', blank=True)
 
     def __str__(self):
         return self.question_text
@@ -26,14 +25,19 @@ class Question(models.Model):
             self._choices = self.choice_set.all()
         return self._choices
     
-    def has_user_voted(self, User):
-        return self.voters.filter(id=User.id).exists()
+    def has_user_voted(self, user):
+        return self.choice_set.filter(voters=user).exists()  
 
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE) #each choice is related to a singular question
     choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
+    voters = models.ManyToManyField(User, related_name='choice_selected', blank=True)
+
+    def votes(self): 
+        choice = Choice.objects.get(id = self.id)
+        number_of_votes = choice.voters.count()
+        return number_of_votes
 
     def __str__(self):
         return self.choice_text
