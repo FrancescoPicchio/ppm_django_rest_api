@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { login } from '../services/auth';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = ( {setIsAuthenticated} ) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +17,7 @@ const Login = ({ setIsAuthenticated }) => {
       setError('Invalid username or password');
     }
   };
-
+  
   return (
     <div>
       <h2>Login</h2>

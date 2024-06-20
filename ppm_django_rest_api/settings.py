@@ -64,7 +64,7 @@ INSTALLED_APPS = [
 ]
 
 #to connect the rest api with the react front end
-CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

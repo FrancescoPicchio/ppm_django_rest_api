@@ -31,7 +31,7 @@ const QuestionList = () => {
             // Retry fetching questions
             fetchQuestionList();
           } catch (refreshError) {
-            setError('Authentication error');
+            setError("You aren't logged in yet!");
             setLoading(false);
           }
         } else {
@@ -109,7 +109,7 @@ const QuestionList = () => {
         </div>
       ) : (
         <div>
-          <h1>Questions</h1>
+          <h1>Polls</h1>
           {error && <p>{error}</p>}
           <ul>
             {questions.map((question) => (
