@@ -11,7 +11,6 @@ const QuestionList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [selectedVote, setSelectedVote] = useState(null);
 
   useEffect(() => {
     const fetchQuestionList = async () => {
@@ -69,7 +68,6 @@ const QuestionList = () => {
   const handleChoiceClick = async (questionId, choiceId) => {
     try {
         const data = await submitQuestionVote(questionId, choiceId);
-        setSelectedVote(data);
         handleQuestionClick(questionId);
       } catch (err) {
         console.error('Error submitting your vote:', err);
@@ -97,7 +95,7 @@ const QuestionList = () => {
 
   return (
     <div>
-      {selectedQuestion ? ( //? is to render only if selectedQuestion is true, else renders the rest after :
+      {selectedQuestion ? (
         <div>
           {error && <p>{error}</p>}
           <h2>{selectedQuestion.question_text}</h2>
