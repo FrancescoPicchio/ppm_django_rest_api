@@ -4,6 +4,7 @@ import QuestionList from './components/QuestionList';
 import Header from './components/Header';
 import NewQuestionCreator from './components/NewQuestionCreator';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import "./App.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(

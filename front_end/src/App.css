@@ -1,0 +1,15 @@
+* {
+    background-color: #B3B4BD;
+    color: #141619;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+nav > ul > li > a, nav > ul > li > p {
+    text-decoration: none;
+    color: white;
+}
+
+nav > ul > li > a:hover {
+    text-decoration: none;
+    color: #2C2E3A;
+}
