@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import LoginSignUp from './pages/LoginSignUp';
 import QuestionList from './components/QuestionList';
 import Header from './components/Header';
+import NewQuestionCreator from './components/NewQuestionCreator';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <LoginSignUp setIsAuthenticated={setIsAuthenticated}/>
               </>
           }/>
+          <Route path="/createNewQuestion" element={<NewQuestionCreator/>}/>
         </Routes>
       </BrowserRouter>
     </div>

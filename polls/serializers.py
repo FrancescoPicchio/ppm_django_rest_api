@@ -26,7 +26,7 @@ class QuestionListSerializer(serializers.Serializer):
     question_text = serializers.CharField(max_length=200)
     pub_date = serializers.DateTimeField()
     was_published_recently = serializers.BooleanField(read_only=True) #read_only=True because we do not want it to be part of the data the serializer has to consider this field for get and post requests, because this isn't a field of the model but the output of a method
-    choices = ChoiceSerializer(many=True, write_only=True)
+    choices = ChoiceSerializer(many=True, write_only=True, required=False)
     creator = serializers.ReadOnlyField(source='creator.username')
 
 

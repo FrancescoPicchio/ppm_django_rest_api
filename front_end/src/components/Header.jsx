@@ -11,10 +11,12 @@ const Header = ({ isAuthenticated, setIsAuthenticated }) => {
     return (
         <nav>
             <ul>
-                <li><Link to="/questions">Content</Link></li>
-                <li>{!(isAuthenticated) && <Link to="/">Login/SignUp</Link>}</li>
-                <li>{isAuthenticated && <button onClick={handleLogout}>Logout</button>}</li>
+                <li><Link to='/questions'>Questions</Link></li>
+                <li>{(!isAuthenticated) ? <Link to='/'>Login/SignUp</Link> : <p>You're logged in as {localStorage.getItem('username')}</p>}</li>
+                { isAuthenticated && <li><Link to='/createNewQuestion'>Create new Poll</Link></li>}
+                {isAuthenticated && <li><button onClick={handleLogout}>Logout</button></li>}
             </ul>
+            <h1>Polls App, using Django REST API and React</h1>
         </nav>
     );
 };

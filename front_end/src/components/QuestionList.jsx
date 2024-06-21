@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { refreshToken } from '../services/auth';
-import {fetchQuestionList, fetchQuestionDetails, submitQuestionVote} from '../services/api';
+import {fetchQuestionList, fetchQuestionDetails, submitQuestionVote, deleteQuestion} from '../services/api';
 
 const API_URL = 'http://localhost:8000/api/polls/questions/';
 
@@ -13,35 +12,18 @@ const QuestionList = () => {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   useEffect(() => {
-    const fetchQuestionList = async () => {
+    const fetchData = async () => {
       try {
-        const accessToken = localStorage.getItem('accessToken');
-        const response = await axios.get(API_URL, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        setQuestions(response.data);
+        console.log('before fetching');
+        const data = await fetchQuestionList();
+        console.log('questions fetched');
+        setQuestions(data);
         setLoading(false);
-      } catch (err) {
-        if (err.response && err.response.status === 401) {
-          // Try to refresh token
-          try {
-            await refreshToken();
-            // Retry fetching questions
-            fetchQuestionList();
-          } catch (refreshError) {
-            setError("You aren't logged in yet!");
-            setLoading(false);
-          }
-        } else {
-          setError('Error fetching questions');
-          setLoading(false);
-        }
+      } catch (error) {
+        setError(error);
       }
     };
-
-    fetchQuestionList();
+    fetchData();
   }, []);
 
   //gets question details on click
@@ -80,7 +62,7 @@ const QuestionList = () => {
           }
         } 
         else if (err.response && err.response.status === 403){
-            setError("You've already voted on this poll"); //FIXME application shouldn't crash/give you an error just because you tried to vote when you voted already
+            setError("You've already voted on this poll!"); //FIXME application shouldn't crash/give you an error just because you tried to vote when you voted already
         }
         else {
           setError('Error submitting your vote');
@@ -93,28 +75,33 @@ const QuestionList = () => {
   }
 
 
+
+
   return (
     <div>
       {selectedQuestion ? (
         <div>
+          <h3>{selectedQuestion.question_text}</h3>
           {error && <p>{error}</p>}
-          <h2>{selectedQuestion.question_text}</h2>
           <ul>
             {selectedQuestion.choices.map((choice) => (
                 <li key={choice.id} onClick={() => handleChoiceClick(selectedQuestion.id, choice.id)}>{choice.choice_text} - votes: {choice.votes}</li>
             ))}
           </ul>
+          <p>Click on the choice you want to vote it!</p>
           <p>author: {selectedQuestion.creator}</p>
+          {(selectedQuestion.creator === localStorage.getItem('username'))
+              && <button onClick={() => {deleteQuestion(selectedQuestion.id); setSelectedQuestion(null)/*FIXME when deleted the question still remains unless you refresh*/}}>
+                Delete your poll</button>}
           <button onClick={() => {setSelectedQuestion(null); setError(null)}}>Back to List</button>
         </div>
       ) : (
         <div>
-          <h1>Polls</h1>
           {error && <p>{error}</p>}
           <ul>
             {questions.map((question) => (
               <li key={question.id} onClick={() => handleQuestionClick(question.id)}>
-                <h2>{question.question_text}</h2>
+                <h3>{question.question_text}</h3>
               </li>
             ))}
           </ul>
