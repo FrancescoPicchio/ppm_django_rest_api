@@ -12,8 +12,8 @@ const Header = ({ isAuthenticated, setIsAuthenticated }) => {
         <nav>
             <ul>
                 <li><Link to='/questions'>Questions</Link></li>
-                <li>{(!isAuthenticated) ? <Link to='/'>Login/SignUp</Link> : <p>You're logged in as {localStorage.getItem('username')}</p>}</li>
                 { isAuthenticated && <li><Link to='/createNewQuestion'>Create new Poll</Link></li>}
+                <li>{(!isAuthenticated) ? <Link to='/'>Login/SignUp</Link> : <p>You're logged in as {localStorage.getItem('username')}</p>}</li>
                 {isAuthenticated && <li><button onClick={handleLogout}>Logout</button></li>}
             </ul>
             <h1>Polls App, using Django REST API and React</h1>
